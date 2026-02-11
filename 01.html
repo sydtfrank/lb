@@ -350,7 +350,7 @@
         <div class="book-list-preview">
             目前書庫包含：社會心理學、台灣歷史、環境保護、商業管理、投資理財、語言學習、職場技能、教育研究及豐富的兒童繪本。
         </div>
-        <div style="text-align: center;">版本3.7</div>
+        <div style="text-align: center;">版本3.8</div>
     </div>
 
     <script>
@@ -362,7 +362,9 @@
                 body: JSON.stringify({ query: query })
             });
             const data = await response.json();
-            return data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+            let text = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+            // 【防呆加強】移除可能出現的 Markdown 標記，避免 JSON 解析失敗
+            return text.replace(/```json/g, "").replace(/```/g, "").trim();
         }
 
         async function refreshExamples() {
